@@ -8,7 +8,7 @@ use OpenIDConnect\Client;
 use OpenIDConnect\Issuer;
 use OpenIDConnect\Metadata\ClientMetadata;
 
-class RpResponseTypeCode
+class ResponseTypeCode
 {
     public function __invoke(Request $request, ClientMetadata $clientMetadata)
     {
