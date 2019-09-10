@@ -14,3 +14,6 @@ test: check
 
 coverage: test
 	@if [ "`uname`" = "Darwin" ]; then open build/coverage/index.html; fi
+
+server:
+	php artisan serve --port 8080
