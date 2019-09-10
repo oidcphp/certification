@@ -1,0 +1,23 @@
+sudo: false
+os: linux
+language: php
+
+php:
+  - 7.2
+  - 7.3
+
+before_install:
+  - cp .env.example .env
+  - php artisan k:g
+
+install:
+  - composer install
+
+script:
+  - php vendor/bin/phpcs
+  - php vendor/bin/phpunit
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+    - vendor
