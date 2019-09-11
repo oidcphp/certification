@@ -32,7 +32,7 @@ class ScopeUserinfoClaims
             'redirect_uri' => 'http://localhost:8080/callback',
             'response_type' => 'code',
             'response_mode' => 'query',
-            'scope' => 'openid profile',
+            'scope' => 'openid profile email address phone',
             'state' => $state,
         ]);
     }

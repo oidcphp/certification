@@ -28,5 +28,7 @@ class Callback extends Controller
         dump($token->idTokenClaims()->all());
 
         dump($client->getUserInfo($token->accessToken()));
+
+        $session->flush();
     }
 }
