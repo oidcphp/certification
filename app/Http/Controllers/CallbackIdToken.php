@@ -25,6 +25,8 @@ class CallbackIdToken extends Controller
 
         $session->flush();
 
-        return response()->json($token->idTokenClaims()->all());
+        return response()->json($token->idTokenClaims([], [
+            'nonce' => $session->get('nonce'),
+        ])->all());
     }
 }
