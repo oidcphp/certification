@@ -8,10 +8,10 @@ php:
 
 before_install:
   - cp .env.example .env
-  - php artisan k:g
 
 install:
   - composer install
+  - php artisan k:g
 
 script:
   - php vendor/bin/phpcs
