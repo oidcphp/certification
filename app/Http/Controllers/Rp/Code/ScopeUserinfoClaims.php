@@ -29,7 +29,7 @@ class ScopeUserinfoClaims
         ]);
 
         return $client->createAuthorizeRedirectResponse([
-            'redirect_uri' => 'http://localhost:8080/callback',
+            'redirect_uri' => 'http://localhost:8080/callback/user-info',
             'response_type' => 'code',
             'response_mode' => 'query',
             'scope' => 'openid profile email address phone',

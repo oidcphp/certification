@@ -30,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
                 ],
                 'redirect_uris' => [
                     'http://localhost:8080/callback',
+                    'http://localhost:8080/callback/id-token',
+                    'http://localhost:8080/callback/token-set',
+                    'http://localhost:8080/callback/user-info',
                 ],
             ]);
         });

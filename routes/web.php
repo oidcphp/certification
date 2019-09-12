@@ -16,3 +16,6 @@ $router->namespace('Rp')->prefix('rp')->group(function (Router $router) {
 });
 
 $router->get('/callback', 'Callback');
+$router->get('/callback/token-set', 'CallbackTokenSet');
+$router->get('/callback/id-token', 'CallbackIdToken');
+$router->get('/callback/user-info', 'CallbackUserInfo');
