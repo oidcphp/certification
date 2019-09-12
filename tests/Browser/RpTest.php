@@ -48,4 +48,16 @@ class RpTest extends DuskTestCase
                 ->assertSee('Receive an invalid ID token');
         });
     }
+
+    /**
+     * @see TokenEndpointClientSecretBasic
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-token_endpoint-client_secret_basic.txt
+     */
+    public function testRpTokenEndpointClientSecretBasic(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/rp/code/rp-token_endpoint-client_secret_basic')
+                ->assertSee('id_token');
+        });
+    }
 }

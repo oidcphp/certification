@@ -13,6 +13,7 @@ $router->namespace('Rp')->prefix('rp')->group(function (Router $router) {
         $router->get('rp-response_type-code', 'ResponseTypeCode');
         $router->get('rp-scope-userinfo-claims', 'ScopeUserinfoClaims');
         $router->get('rp-nonce-invalid', 'NonceInvalid');
+        $router->get('rp-token_endpoint-client_secret_basic', 'TokenEndpointClientSecretBasic');
     });
 });
 
