@@ -15,6 +15,9 @@ $router->namespace('Rp')->prefix('rp')->group(function (Router $router) {
         $router->get('rp-nonce-invalid', 'NonceInvalid');
         $router->get('rp-token_endpoint-client_secret_basic', 'TokenEndpointClientSecretBasic');
     });
+    $router->namespace('Configuration')->prefix('configuration')->group(function (Router $router) {
+        $router->get('rp-discovery-openid-configuration	', 'DiscoveryOpenIDConfiguration');
+    });
 });
 
 $router->get('/callback', 'Callback');
