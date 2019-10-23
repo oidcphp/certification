@@ -29,7 +29,7 @@ class ResponseTypeCode
         ]);
 
         return $client->createAuthorizeRedirectResponse([
-            'redirect_uri' => 'http://localhost:8080/callback/id-token',
+            'redirect_uri' => 'http://localhost:8000/callback/id-token',
             'response_type' => 'code',
             'response_mode' => 'query',
             'scope' => 'openid',

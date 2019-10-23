@@ -20,7 +20,7 @@ class CallbackIdToken extends Controller
 
         $token = $client->handleOpenIDConnectCallback($request->query(), [
             'state' => $session->get('state'),
-            'redirect_uri' => 'http://localhost:8080/callback/id-token',
+            'redirect_uri' => 'http://localhost:8000/callback/id-token',
         ]);
 
         $session->flush();

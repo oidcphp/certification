@@ -21,7 +21,7 @@ class Callback extends Controller
         $token = $client->handleOpenIDConnectCallback($request->query(), [
             'nonce' => $session->get('nonce'),
             'state' => $session->get('state'),
-            'redirect_uri' => 'http://localhost:8080/callback',
+            'redirect_uri' => 'http://localhost:8000/callback',
         ]);
 
         dump($token->jsonSerialize());

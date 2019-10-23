@@ -32,7 +32,7 @@ class NonceInvalid
 
         return $client->createAuthorizeRedirectResponse([
             'nonce' => $nonce,
-            'redirect_uri' => 'http://localhost:8080/callback',
+            'redirect_uri' => 'http://localhost:8000/callback',
             'response_type' => 'code',
             'response_mode' => 'query',
             'scope' => 'openid',

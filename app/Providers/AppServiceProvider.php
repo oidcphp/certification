@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Illuminate\Support\ServiceProvider;
 use OpenIDConnect\Metadata\ClientMetadata;
+use OpenIDConnect\OAuth2\Grant\GrantFactory;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -21,7 +24,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ResponseFactoryInterface::class, ResponseFactory::class);
         $this->app->singleton(RequestFactoryInterface::class, RequestFactory::class);
         $this->app->singleton(UriFactoryInterface::class, UriFactory::class);
-        $this->app->singleton(\GuzzleHttp\ClientInterface::class, \GuzzleHttp\Client::class);
+        $this->app->singleton(HttpClientInterface::class, HttpClient::class);
+        $this->app->singleton(GrantFactory::class, GrantFactory::class);
 
         $this->app->singleton(ClientMetadata::class, function () {
             return new ClientMetadata([
@@ -29,10 +33,10 @@ class AppServiceProvider extends ServiceProvider
                     'jangconan@gmail.com',
                 ],
                 'redirect_uris' => [
-                    'http://localhost:8080/callback',
-                    'http://localhost:8080/callback/id-token',
-                    'http://localhost:8080/callback/token-set',
-                    'http://localhost:8080/callback/user-info',
+                    'http://localhost:8000/callback',
+                    'http://localhost:8000/callback/id-token',
+                    'http://localhost:8000/callback/token-set',
+                    'http://localhost:8000/callback/user-info',
                 ],
             ]);
         });

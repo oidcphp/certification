@@ -29,7 +29,7 @@ class TokenEndpointClientSecretBasic
         ]);
 
         return $client->createAuthorizeRedirectResponse([
-            'redirect_uri' => 'http://localhost:8080/callback/token-set',
+            'redirect_uri' => 'http://localhost:8000/callback/token-set',
             'response_type' => 'code',
             'response_mode' => 'query',
             'scope' => 'openid',
