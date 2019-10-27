@@ -97,12 +97,12 @@ class RpTest extends DuskTestCase
      */
     public function testIdTokenKidAbsentSingleJwks(): void
     {
-        $this->markTestIncomplete();
-
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-id_token-kid-absent-single-jwks
             $browser->visit('/rp/code/rp-id_token-kid-absent-single-jwks')
-                ->assertSee('id_token');
+                ->assertSee('iss')
+                ->assertSee('sub')
+                ->assertSee('aud');
         });
     }
 
@@ -116,12 +116,10 @@ class RpTest extends DuskTestCase
      */
     public function testIdTokenIat(): void
     {
-        $this->markTestIncomplete();
-
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-id_token-iat
             $browser->visit('/rp/code/rp-id_token-iat')
-                ->assertSee('id_token');
+                ->assertSee('Receive an invalid ID token');
         });
     }
 
@@ -135,12 +133,10 @@ class RpTest extends DuskTestCase
      */
     public function testIdTokenAud(): void
     {
-        $this->markTestIncomplete();
-
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-id_token-aud
             $browser->visit('/rp/code/rp-id_token-aud')
-                ->assertSee('id_token');
+                ->assertSee('Receive an invalid ID token');
         });
     }
 }
