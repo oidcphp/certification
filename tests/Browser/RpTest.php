@@ -139,4 +139,22 @@ class RpTest extends DuskTestCase
                 ->assertSee('Receive an invalid ID token');
         });
     }
+
+    /**
+     * Use Code Flow and retrieve an unsigned ID Token. This test is only applicable when response_type='code'
+     *
+     * Accept the ID Token after doing ID Token validation.
+     *
+     * @see IdTokenSigNone
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-sig-none.txt
+     */
+    public function testIdTokenSigNone(): void
+    {
+        $this->browse(function (Browser $browser) {
+            // http://localhost:8000/rp/code/rp-id_token-sig-none
+            $browser->visit('/rp/code/rp-id_token-sig-none');
+
+            $this->markTestIncomplete();
+        });
+    }
 }
