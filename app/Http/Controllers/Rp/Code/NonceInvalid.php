@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers\Rp\Code;
 
+use App\Http\Controllers\Rp\CertificationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use OpenIDConnect\Client;
 use OpenIDConnect\Issuer;
 use OpenIDConnect\Metadata\ClientMetadata;
 
+/**
+ * @see RpTest::testNonceInvalid()
+ */
 class NonceInvalid
 {
+    use CertificationTrait;
+
     public function __invoke(Request $request, ClientMetadata $clientMetadata)
     {
-        $testUrl = 'https://rp.certification.openid.net:8080/oidcphp-rp.code/rp-nonce-invalid';
+        $url = $this->createAuthorizationUrl('code', 'rp-nonce-invalid');
 
-        $issuer = Issuer::create($testUrl);
+        $issuer = Issuer::create($url);
         $provider = $issuer->discover();
         $registration = $issuer->register($clientMetadata);
 

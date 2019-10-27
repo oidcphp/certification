@@ -18,7 +18,7 @@ class RpTest extends DuskTestCase
      * @see ResponseTypeCode
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-response_type-code.txt
      */
-    public function testRpResponseTypeCode(): void
+    public function testResponseTypeCode(): void
     {
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-response_type-code
@@ -37,7 +37,7 @@ class RpTest extends DuskTestCase
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-scope-userinfo-claims.txt
      * @link https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
      */
-    public function testRpScopeUserinfoClaims(): void
+    public function testScopeUserinfoClaims(): void
     {
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-scope-userinfo-claims
@@ -60,7 +60,7 @@ class RpTest extends DuskTestCase
      *
      * @link https://openid.net/specs/openid-connect-core-1_0.html#NonceNotes
      */
-    public function testRpNonceInvalid(): void
+    public function testNonceInvalid(): void
     {
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-nonce-invalid
@@ -77,7 +77,7 @@ class RpTest extends DuskTestCase
      * @see TokenEndpointClientSecretBasic
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-token_endpoint-client_secret_basic.txt
      */
-    public function testRpTokenEndpointClientSecretBasic(): void
+    public function testTokenEndpointClientSecretBasic(): void
     {
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-token_endpoint-client_secret_basic
