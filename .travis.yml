@@ -3,15 +3,24 @@ os: linux
 language: php
 php: 7.3
 
+addons:
+  chrome: stable
+
 before_install:
   - cp .env.example .env
 
 install:
-  - composer install
-  - php artisan k:g
+  - composer install --no-interaction --prefer-dist --no-suggest
+  - php artisan key:generate
+  - php artisan dusk:chrome-driver
+
+before_script:
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - php artisan serve &
 
 script:
   - php vendor/bin/phpcs
+  - php artisan dusk
 
 cache:
   directories:
