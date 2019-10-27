@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.2",
         "laravel/framework": "^6.4",
-        "oidc/core": "0.3.0",
+        "oidc/core": "dev-master#f37510f",
         "symfony/psr-http-message-bridge": "^1.2",
         "zendframework/zend-diactoros": "^2.1"
     },

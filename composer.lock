@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79afc72a1a4c5c06fa8852595e2e652f",
+    "content-hash": "8b5115883b1f1c48eb10a70e2f3009bd",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -980,16 +980,16 @@
         },
         {
             "name": "oidc/core",
-            "version": "v0.3.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oidcphp/core.git",
-                "reference": "1532ff9624e0d8fb49b5ead63aea03a56ad1ccc6"
+                "reference": "f37510f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oidcphp/core/zipball/1532ff9624e0d8fb49b5ead63aea03a56ad1ccc6",
-                "reference": "1532ff9624e0d8fb49b5ead63aea03a56ad1ccc6",
+                "url": "https://api.github.com/repos/oidcphp/core/zipball/f37510f",
+                "reference": "f37510f",
                 "shasum": ""
             },
             "require": {
@@ -1027,7 +1027,8 @@
             "authors": [
                 {
                     "name": "MilesChou",
-                    "email": "jangconan@gmail.com"
+                    "email": "jangconan@gmail.com",
+                    "role": "Developer"
                 }
             ],
             "description": "OpenID Connect Core Library implementation for PHP",
@@ -1035,7 +1036,7 @@
                 "OpenID Connect",
                 "oidc"
             ],
-            "time": "2019-10-23T15:34:15+00:00"
+            "time": "2019-10-27T14:37:22+00:00"
         },
         {
             "name": "opis/closure",
@@ -6196,8 +6197,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
@@ -6256,7 +6257,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "oidc/core": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

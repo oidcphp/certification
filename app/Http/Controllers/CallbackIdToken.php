@@ -19,14 +19,17 @@ class CallbackIdToken extends Controller
         ), new ClientRegistration($session->get('registration')), app());
 
         $token = $client->handleOpenIDConnectCallback($request->query(), [
+            'nonce' => $session->get('nonce'),
             'state' => $session->get('state'),
             'redirect_uri' => 'http://localhost:8000/callback/id-token',
         ]);
 
+        $claims = $token->idTokenClaims([], [
+            'nonce' => $session->get('nonce'),
+        ])->all();
+
         $session->flush();
 
-        return response()->json($token->idTokenClaims([], [
-            'nonce' => $session->get('nonce'),
-        ])->all());
+        return response()->json($claims);
     }
 }

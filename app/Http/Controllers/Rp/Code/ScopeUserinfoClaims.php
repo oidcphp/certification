@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Rp\Code;
 
 use App\Http\Controllers\Rp\CertificationTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use OpenIDConnect\Client;
-use OpenIDConnect\Issuer;
 use OpenIDConnect\Metadata\ClientMetadata;
 
 /**
@@ -18,28 +15,13 @@ class ScopeUserinfoClaims
 
     public function __invoke(Request $request, ClientMetadata $clientMetadata)
     {
-        $url = $this->createAuthorizationUrl('code', 'rp-scope-userinfo-claims');
-
-        $issuer = Issuer::create($url);
-        $provider = $issuer->discover();
-        $registration = $issuer->register($clientMetadata);
-
-        $client = new Client($provider, $registration, app());
-
-        $state = Str::random();
-
-        $request->session()->put([
-            'state' => $state,
-            'provider' => $provider->toArray(),
-            'registration' => $registration->toArray(),
-        ]);
+        $client = $this->createOpenIDConnectClient($clientMetadata, 'code', 'rp-scope-userinfo-claims');
 
         return $client->createAuthorizeRedirectResponse([
             'redirect_uri' => 'http://localhost:8000/callback/user-info',
-            'response_type' => 'code',
             'response_mode' => 'query',
+            'response_type' => 'code',
             'scope' => 'openid profile email address phone',
-            'state' => $state,
         ]);
     }
 }
