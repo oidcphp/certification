@@ -5,6 +5,9 @@ namespace Tests\Browser;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
+/**
+ * @see https://rp.certification.openid.net:8080/list?profile=DYN
+ */
 class ConfigurationTest extends DuskTestCase
 {
     /**

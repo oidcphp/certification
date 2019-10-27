@@ -2,10 +2,12 @@
 
 namespace Tests\Browser;
 
-use App\Http\Controllers\Rp\Code\NonceInvalid;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
+/**
+ * @see https://rp.certification.openid.net:8080/list?profile=C
+ */
 class RpTest extends DuskTestCase
 {
     /**
@@ -80,6 +82,64 @@ class RpTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-token_endpoint-client_secret_basic
             $browser->visit('/rp/code/rp-token_endpoint-client_secret_basic')
+                ->assertSee('id_token');
+        });
+    }
+
+    /**
+     * Request an ID token and verify its signature using a single matching key provided by the Issuer.
+     *
+     * Use the single matching key out of the Issuer's published set to verify the ID Tokens signature and accept the ID Token after doing ID Token validation.
+     *
+     * @see IdTokenKidAbsentSingleJwks
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-kid-absent-single-jwks.txt
+     * @link https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
+     */
+    public function testIdTokenKidAbsentSingleJwks(): void
+    {
+        $this->markTestIncomplete();
+
+        $this->browse(function (Browser $browser) {
+            // http://localhost:8000/rp/code/rp-id_token-kid-absent-single-jwks
+            $browser->visit('/rp/code/rp-id_token-kid-absent-single-jwks')
+                ->assertSee('id_token');
+        });
+    }
+
+    /**
+     * Request an ID token and compare its aud value to the Relying Party's 'client_id'.
+     *
+     * Identify that the 'aud' value is missing or doesn't match the 'client_id' and reject the ID Token after doing ID Token validation.
+     *
+     * @see IdTokenIat
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-iat.txt
+     */
+    public function testIdTokenIat(): void
+    {
+        $this->markTestIncomplete();
+
+        $this->browse(function (Browser $browser) {
+            // http://localhost:8000/rp/code/rp-id_token-iat
+            $browser->visit('/rp/code/rp-id_token-iat')
+                ->assertSee('id_token');
+        });
+    }
+
+    /**
+     * Request an ID token and verify its 'iat' value.
+     *
+     * Identify the missing 'iat' value and reject the ID Token after doing ID Token validation.
+     *
+     * @see IdTokenAud
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-aud.txt
+     */
+    public function testIdTokenAud(): void
+    {
+        $this->markTestIncomplete();
+
+        $this->browse(function (Browser $browser) {
+            // http://localhost:8000/rp/code/rp-id_token-aud
+            $browser->visit('/rp/code/rp-id_token-aud')
                 ->assertSee('id_token');
         });
     }
