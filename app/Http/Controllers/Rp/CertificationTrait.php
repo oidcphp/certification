@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Rp;
 
 use Illuminate\Support\Facades\Session;
-use OpenIDConnect\Client;
-use OpenIDConnect\Issuer;
-use OpenIDConnect\Metadata\ClientMetadata;
+use OpenIDConnect\Core\Client;
+use OpenIDConnect\Core\Issuer;
+use OpenIDConnect\OAuth2\Metadata\ClientMetadata;
 
 trait CertificationTrait
 {
@@ -30,9 +30,9 @@ trait CertificationTrait
      */
     protected function createOpenIDConnectClient(ClientMetadata $clientMetadata, $profile, $testId): Client
     {
-        $issuer = Issuer::create($this->createAuthorizationUrl($profile, $testId));
-        $provider = $issuer->discover();
-        $registration = $issuer->register($clientMetadata);
+        $issuer = Issuer::create(app());
+        $provider = $issuer->discover($this->createAuthorizationUrl($profile, $testId));
+        $registration = $issuer->register($provider, $clientMetadata);
 
         $client = new Client($provider, $registration, app());
 
@@ -40,6 +40,7 @@ trait CertificationTrait
 
         Session::put([
             'nonce' => $client->getNonce(),
+            'jwks' => $provider->jwkSet(),
             'state' => $client->getState(),
             'provider' => $provider->toArray(),
             'registration' => $registration->toArray(),

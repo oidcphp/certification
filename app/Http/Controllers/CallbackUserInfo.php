@@ -3,20 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use OpenIDConnect\Client;
-use OpenIDConnect\Metadata\ClientRegistration;
-use OpenIDConnect\Metadata\ProviderMetadata;
+use OpenIDConnect\Core\Builder\UserInfoRequestBuilder;
+use OpenIDConnect\Core\Client;
+use OpenIDConnect\OAuth2\Metadata\ClientInformation;
+use OpenIDConnect\OAuth2\Metadata\ProviderMetadata;
+use Psr\Http\Client\ClientInterface;
 
 class CallbackUserInfo extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, ClientInterface $httpClient)
     {
         $session = $request->session();
 
-        $client = new Client(new ProviderMetadata(
-            $session->get('provider.discovery'),
-            $session->get('provider.jwks')
-        ), new ClientRegistration($session->get('registration')), app());
+        $providerMetadata = new ProviderMetadata(
+            $session->get('provider'),
+            $session->get('jwks')
+        );
+
+        $clientInformation = new ClientInformation($session->get('registration'));
+
+        $client = new Client($providerMetadata, $clientInformation, app());
 
         $token = $client->handleOpenIDConnectCallback($request->query(), [
             'state' => $session->get('state'),
@@ -25,6 +31,11 @@ class CallbackUserInfo extends Controller
 
         $session->flush();
 
-        return response()->json($client->getUserInfo($token->accessToken()));
+        $builder = new UserInfoRequestBuilder(app());
+        $builder->setProviderMetadata($providerMetadata);
+        $builder->setClientInformation($clientInformation);
+        $request = $builder->build($token->accessToken());
+
+        return response()->json(json_decode((string)$httpClient->sendRequest($request)->getBody(), true));
     }
 }

@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Illuminate\Support\ServiceProvider;
-use OpenIDConnect\Metadata\ClientMetadata;
-use OpenIDConnect\OAuth2\Grant\GrantFactory;
+use OpenIDConnect\Core\Token\TokenFactory;
+use OpenIDConnect\OAuth2\Metadata\ClientMetadata;
+use OpenIDConnect\OAuth2\Token\TokenFactoryInterface;
+use OpenIDConnect\Support\Http\GuzzlePsr18Client;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -24,8 +26,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ResponseFactoryInterface::class, ResponseFactory::class);
         $this->app->singleton(RequestFactoryInterface::class, RequestFactory::class);
         $this->app->singleton(UriFactoryInterface::class, UriFactory::class);
-        $this->app->singleton(HttpClientInterface::class, HttpClient::class);
-        $this->app->singleton(GrantFactory::class, GrantFactory::class);
+        $this->app->singleton(ClientInterface::class, function () {
+            return new GuzzlePsr18Client(new HttpClient());
+        });
 
         $this->app->singleton(ClientMetadata::class, function () {
             return new ClientMetadata([
@@ -40,6 +43,8 @@ class AppServiceProvider extends ServiceProvider
                 ],
             ]);
         });
+
+        $this->app->singleton(TokenFactoryInterface::class, TokenFactory::class);
     }
 
     public function boot()

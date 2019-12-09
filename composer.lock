@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f945e6545105db76d66f36abecaf337",
+    "content-hash": "c30ff97dc84ae3d7596961f08ad4d0d5",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -364,16 +364,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.4.1",
+            "version": "6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "0895c932405407fd3a7368b6910c09a24d26db11"
+                "reference": "dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0895c932405407fd3a7368b6910c09a24d26db11",
-                "reference": "0895c932405407fd3a7368b6910c09a24d26db11",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5",
+                "reference": "dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5",
                 "shasum": ""
             },
             "require": {
@@ -388,12 +388,13 @@
                 "psr/log": "^1.1"
             },
             "suggest": {
+                "ext-intl": "Required for Internationalized Domain Name (IDN) support",
                 "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.3-dev"
+                    "dev-master": "6.5-dev"
                 }
             },
             "autoload": {
@@ -426,7 +427,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2019-10-23T15:58:00+00:00"
+            "time": "2019-12-07T18:20:45+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -602,16 +603,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v6.6.0",
+            "version": "v6.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "b48528ba5422ac909dbabf0b1cc34534928e7bce"
+                "reference": "27efba7e13aaf91a87ae9a63db158e943eb71410"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b48528ba5422ac909dbabf0b1cc34534928e7bce",
-                "reference": "b48528ba5422ac909dbabf0b1cc34534928e7bce",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/27efba7e13aaf91a87ae9a63db158e943eb71410",
+                "reference": "27efba7e13aaf91a87ae9a63db158e943eb71410",
                 "shasum": ""
             },
             "require": {
@@ -707,7 +708,7 @@
                 "league/flysystem-sftp": "Required to use the Flysystem SFTP driver (^1.0).",
                 "moontoast/math": "Required to use ordered UUIDs (^1.1).",
                 "pda/pheanstalk": "Required to use the beanstalk queue driver (^4.0).",
-                "psr/http-message": "Required to allow Storage::put to accept a StreamInterface (^1.0)",
+                "psr/http-message": "Required to allow Storage::put to accept a StreamInterface (^1.0).",
                 "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (^4.0).",
                 "symfony/cache": "Required to PSR-6 cache bridge (^4.3.4).",
                 "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^1.2).",
@@ -744,20 +745,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-11-26T15:33:08+00:00"
+            "time": "2019-12-05T13:49:53+00:00"
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.57",
+            "version": "1.0.61",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a"
+                "reference": "4fb13c01784a6c9f165a351e996871488ca2d8c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a",
-                "reference": "0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/4fb13c01784a6c9f165a351e996871488ca2d8c9",
+                "reference": "4fb13c01784a6c9f165a351e996871488ca2d8c9",
                 "shasum": ""
             },
             "require": {
@@ -828,7 +829,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-10-16T21:01:05+00:00"
+            "time": "2019-12-08T21:46:50+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -987,18 +988,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/oidcphp/core.git",
-                "reference": "f37510f"
+                "reference": "3ee50a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oidcphp/core/zipball/f37510f",
-                "reference": "f37510f",
+                "url": "https://api.github.com/repos/oidcphp/core/zipball/3ee50a7",
+                "reference": "3ee50a7",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "^6.0",
                 "http-interop/http-factory-guzzle": "^1.0",
+                "oidc/oauth2": "^0.5.0",
                 "oidc/support": "^0.2.0",
                 "php": ">=7.1",
                 "psr/container": "^1.0",
@@ -1010,7 +1012,7 @@
                 "web-token/jwt-signature": "^1.3"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "^2.1",
+                "codacy/coverage": "^1.4",
                 "phpstan/phpstan": "^0.11.8",
                 "phpunit/phpunit": "^7 | ^8",
                 "squizlabs/php_codesniffer": "^3.4",
@@ -1021,7 +1023,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "OpenIDConnect\\": "src/OpenIDConnect"
+                    "OpenIDConnect\\Core\\": "src/Core"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1040,7 +1042,60 @@
                 "OpenID Connect",
                 "oidc"
             ],
-            "time": "2019-10-27T14:37:22+00:00"
+            "time": "2019-12-09T13:56:42+00:00"
+        },
+        {
+            "name": "oidc/oauth2",
+            "version": "v0.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oidcphp/oauth2.git",
+                "reference": "83ad8e8c37606e4092155c39c75864c3dd8e5a44"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oidcphp/oauth2/zipball/83ad8e8c37606e4092155c39c75864c3dd8e5a44",
+                "reference": "83ad8e8c37606e4092155c39c75864c3dd8e5a44",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "oidc/support": "^0.2.0",
+                "php": ">=7.1",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "codacy/coverage": "^1.4",
+                "guzzlehttp/guzzle": "^6.4",
+                "http-interop/http-factory-guzzle": "^1.0",
+                "phpstan/phpstan": "^0.11.8",
+                "phpunit/phpunit": "^6 | ^7 | ^8",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OpenIDConnect\\OAuth2\\": "src/OAuth2"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "MilesChou",
+                    "email": "jangconan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The library for OAuth 2.0 Authorization Framework.",
+            "keywords": [
+                "oauth2"
+            ],
+            "time": "2019-12-02T16:23:18+00:00"
         },
         {
             "name": "oidc/support",
@@ -4907,16 +4962,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.6.2",
+            "version": "v5.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "4ef2d398a3c4b99edf422bd8b9eed609b8fb6761"
+                "reference": "c342e3e802607d0ca081b6b8021811e218b5fe5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/4ef2d398a3c4b99edf422bd8b9eed609b8fb6761",
-                "reference": "4ef2d398a3c4b99edf422bd8b9eed609b8fb6761",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/c342e3e802607d0ca081b6b8021811e218b5fe5d",
+                "reference": "c342e3e802607d0ca081b6b8021811e218b5fe5d",
                 "shasum": ""
             },
             "require": {
@@ -4930,7 +4985,7 @@
                 "symfony/console": "^4.0|^5.0",
                 "symfony/finder": "^4.0|^5.0",
                 "symfony/process": "^4.0|^5.0",
-                "vlucas/phpdotenv": "^2.2|^3.3"
+                "vlucas/phpdotenv": "^2.2|^3.0|^4.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
@@ -4971,7 +5026,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-11-26T17:10:09+00:00"
+            "time": "2019-12-03T21:07:05+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5590,16 +5645,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.4.3",
+            "version": "8.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "67f9e35bffc0dd52d55d565ddbe4230454fd6a4e"
+                "reference": "3ee1c1fd6fc264480c25b6fb8285edefe1702dab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/67f9e35bffc0dd52d55d565ddbe4230454fd6a4e",
-                "reference": "67f9e35bffc0dd52d55d565ddbe4230454fd6a4e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3ee1c1fd6fc264480c25b6fb8285edefe1702dab",
+                "reference": "3ee1c1fd6fc264480c25b6fb8285edefe1702dab",
                 "shasum": ""
             },
             "require": {
@@ -5643,7 +5698,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "8.4-dev"
+                    "dev-master": "8.5-dev"
                 }
             },
             "autoload": {
@@ -5669,7 +5724,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-11-06T09:42:23+00:00"
+            "time": "2019-12-06T05:41:38+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -6288,16 +6343,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.5.2",
+            "version": "3.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "65b12cdeaaa6cd276d4c3033a95b9b88b12701e7"
+                "reference": "557a1fc7ac702c66b0bbfe16ab3d55839ef724cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/65b12cdeaaa6cd276d4c3033a95b9b88b12701e7",
-                "reference": "65b12cdeaaa6cd276d4c3033a95b9b88b12701e7",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/557a1fc7ac702c66b0bbfe16ab3d55839ef724cb",
+                "reference": "557a1fc7ac702c66b0bbfe16ab3d55839ef724cb",
                 "shasum": ""
             },
             "require": {
@@ -6335,7 +6390,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-10-28T04:36:32+00:00"
+            "time": "2019-12-04T04:46:47+00:00"
         },
         {
             "name": "theseer/tokenizer",

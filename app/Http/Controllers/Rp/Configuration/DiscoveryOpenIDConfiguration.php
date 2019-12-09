@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Rp\Configuration;
 
 use App\Http\Controllers\Rp\CertificationTrait;
 use Illuminate\Http\Request;
-use OpenIDConnect\Issuer;
-use OpenIDConnect\Metadata\ClientMetadata;
+use OpenIDConnect\Core\Issuer;
+use OpenIDConnect\OAuth2\Metadata\ClientMetadata;
 use Tests\Browser\ConfigurationTest;
 
 /**
@@ -19,9 +19,9 @@ class DiscoveryOpenIDConfiguration
     {
         $url = $this->createAuthorizationUrl('configuration', 'rp-discovery-openid-configuration');
 
-        $issuer = Issuer::create($url);
-        $provider = $issuer->discover();
+        $issuer = Issuer::create(app());
+        $provider = $issuer->discover($url);
 
-        return response()->json($provider->toArray()['discovery']);
+        return response()->json($provider->toArray());
     }
 }

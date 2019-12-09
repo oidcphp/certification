@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use OpenIDConnect\Client;
-use OpenIDConnect\Metadata\ClientRegistration;
-use OpenIDConnect\Metadata\ProviderMetadata;
+use OpenIDConnect\Core\Client;
+use OpenIDConnect\OAuth2\Metadata\ClientInformation;
+use OpenIDConnect\OAuth2\Metadata\ProviderMetadata;
 
 class CallbackTokenSet extends Controller
 {
@@ -14,9 +14,9 @@ class CallbackTokenSet extends Controller
         $session = $request->session();
 
         $client = new Client(new ProviderMetadata(
-            $session->get('provider.discovery'),
-            $session->get('provider.jwks')
-        ), new ClientRegistration($session->get('registration')), app());
+            $session->get('provider'),
+            $session->get('jwks')
+        ), new ClientInformation($session->get('registration')), app());
 
         $token = $client->handleOpenIDConnectCallback($request->query(), [
             'state' => $session->get('state'),

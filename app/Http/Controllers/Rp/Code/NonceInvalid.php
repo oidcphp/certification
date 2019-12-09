@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Rp\Code;
 
 use App\Http\Controllers\Rp\CertificationTrait;
 use Illuminate\Http\Request;
-use OpenIDConnect\Metadata\ClientMetadata;
+use OpenIDConnect\OAuth2\Metadata\ClientMetadata;
 
 /**
  * @see RpTest::testNonceInvalid()
