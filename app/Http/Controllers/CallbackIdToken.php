@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use OpenIDConnect\Core\Client;
-use OpenIDConnect\OAuth2\Metadata\ClientInformation;
-use OpenIDConnect\OAuth2\Metadata\ProviderMetadata;
+use MilesChou\Psr\Http\Client\HttpClientManager;
+use OpenIDConnect\Client;
+use OpenIDConnect\Config;
+use OpenIDConnect\Metadata\ClientMetadata;
+use OpenIDConnect\Metadata\ProviderMetadata;
 
 class CallbackIdToken extends Controller
 {
@@ -13,20 +15,23 @@ class CallbackIdToken extends Controller
     {
         $session = $request->session();
 
-        $client = new Client(new ProviderMetadata(
-            $session->get('provider'),
-            $session->get('jwks')
-        ), new ClientInformation($session->get('registration')), app());
+        $config = new Config(
+            new ProviderMetadata(
+                $session->get('provider'),
+                $session->get('jwks')
+            ),
+            new ClientMetadata($session->get('registration'))
+        );
 
-        $token = $client->handleOpenIDConnectCallback($request->query(), [
+        $client = new Client($config, new HttpClientManager(new \GuzzleHttp\Client()));
+
+        $token = $client->handleCallback($request->query(), [
             'nonce' => $session->get('nonce'),
             'state' => $session->get('state'),
             'redirect_uri' => 'http://localhost:8000/callback/id-token',
         ]);
 
-        $claims = $token->idTokenClaims([], [
-            'nonce' => $session->get('nonce'),
-        ])->all();
+        $claims = $token->idTokenClaims()->all();
 
         $session->flush();
 
