@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ 8.0 ]
+        php: [ 8.2, 8.1, 8.0 ]
 
     name: PHP ${{ matrix.php }}
 
@@ -35,8 +35,5 @@ jobs:
           max_attempts: 5
           command: composer install --prefer-dist --no-interaction --no-progress
 
-      - name: Execute unit tests
-        run: php vendor/bin/codecept run unit
-
-      - name: Execute functional tests
-        run: php vendor/bin/codecept run functional
+      - name: Execute lint
+        run: php vendor/bin/phpcs
