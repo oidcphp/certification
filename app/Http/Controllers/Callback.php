@@ -2,36 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Rp\CertificationTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use OpenIDConnect\Core\Client;
-use OpenIDConnect\OAuth2\Metadata\ClientInformation;
-use OpenIDConnect\OAuth2\Metadata\ProviderMetadata;
+use MilesChou\Psr\Http\Client\HttpClientInterface;
+use OpenIDConnect\Http\Request\UserInfoRequestBuilder;
 
+/**
+ * Show the token response, the claims of ID Token and the UserInfo response for debugging
+ */
 class Callback extends Controller
 {
-    public function __invoke(Request $request)
+    use CertificationTrait;
+
+    public function __invoke(Request $request, HttpClientInterface $httpClient): JsonResponse
     {
         $session = $request->session();
+        $config = $this->restoreConfig($session);
 
-        $client = new Client(new ProviderMetadata(
-            $session->get('provider'),
-            $session->get('jwks')
-        ), new ClientInformation($session->get('registration')), app());
+        $token = $this->handleAuthorizationCallback($session, $request->query(), '/callback');
 
-        $token = $client->handleOpenIDConnectCallback($request->query(), [
-            'nonce' => $session->get('nonce'),
-            'state' => $session->get('state'),
-            'redirect_uri' => 'http://localhost:8000/callback',
+        $userInfo = (new UserInfoRequestBuilder($config, $httpClient))
+            ->build($token->accessToken())
+            ->send();
+
+        return response()->json([
+            'token_set' => $token,
+            'id_token_claims' => $token->idToken() ? $token->idTokenClaims()->all() : null,
+            'user_info' => json_decode((string)$userInfo->getBody(), true),
         ]);
-
-        dump($token->jsonSerialize());
-
-        dump($token->idTokenClaims([], [
-            'nonce' => $session->get('nonce'),
-        ])->all());
-
-        dump($client->getUserInfo($token->accessToken()));
-
-        $session->flush();
     }
 }

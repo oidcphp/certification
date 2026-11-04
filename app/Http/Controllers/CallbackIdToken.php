@@ -2,39 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Rp\CertificationTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use MilesChou\Psr\Http\Client\HttpClientManager;
-use OpenIDConnect\Client;
-use OpenIDConnect\Config;
-use OpenIDConnect\Metadata\ClientMetadata;
-use OpenIDConnect\Metadata\ProviderMetadata;
 
+/**
+ * Show the claims of the verified ID Token
+ */
 class CallbackIdToken extends Controller
 {
-    public function __invoke(Request $request)
+    use CertificationTrait;
+
+    public function __invoke(Request $request): JsonResponse
     {
-        $session = $request->session();
+        $token = $this->handleAuthorizationCallback($request->session(), $request->query(), '/callback/id-token');
 
-        $config = new Config(
-            new ProviderMetadata(
-                $session->get('provider'),
-                $session->get('jwks')
-            ),
-            new ClientMetadata($session->get('registration'))
-        );
-
-        $client = new Client($config, new HttpClientManager(new \GuzzleHttp\Client()));
-
-        $token = $client->handleCallback($request->query(), [
-            'nonce' => $session->get('nonce'),
-            'state' => $session->get('state'),
-            'redirect_uri' => 'http://localhost:8000/callback/id-token',
-        ]);
-
-        $claims = $token->idTokenClaims()->all();
-
-        $session->flush();
-
-        return response()->json($claims);
+        return response()->json($token->idTokenClaims()->all());
     }
 }

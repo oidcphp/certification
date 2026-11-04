@@ -2,40 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Rp\CertificationTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use OpenIDConnect\Core\Builder\UserInfoRequestBuilder;
-use OpenIDConnect\Core\Client;
-use OpenIDConnect\OAuth2\Metadata\ClientInformation;
-use OpenIDConnect\OAuth2\Metadata\ProviderMetadata;
-use Psr\Http\Client\ClientInterface;
+use MilesChou\Psr\Http\Client\HttpClientInterface;
+use OpenIDConnect\Http\Request\UserInfoRequestBuilder;
 
+/**
+ * Show the UserInfo response
+ */
 class CallbackUserInfo extends Controller
 {
-    public function __invoke(Request $request, ClientInterface $httpClient)
+    use CertificationTrait;
+
+    public function __invoke(Request $request, HttpClientInterface $httpClient): JsonResponse
     {
         $session = $request->session();
+        $config = $this->restoreConfig($session);
 
-        $providerMetadata = new ProviderMetadata(
-            $session->get('provider'),
-            $session->get('jwks')
-        );
+        $token = $this->handleAuthorizationCallback($session, $request->query(), '/callback/user-info');
 
-        $clientInformation = new ClientInformation($session->get('registration'));
+        $response = (new UserInfoRequestBuilder($config, $httpClient))
+            ->build($token->accessToken())
+            ->send();
 
-        $client = new Client($providerMetadata, $clientInformation, app());
-
-        $token = $client->handleOpenIDConnectCallback($request->query(), [
-            'state' => $session->get('state'),
-            'redirect_uri' => 'http://localhost:8000/callback/user-info',
-        ]);
-
-        $session->flush();
-
-        $builder = new UserInfoRequestBuilder(app());
-        $builder->setProviderMetadata($providerMetadata);
-        $builder->setClientInformation($clientInformation);
-        $request = $builder->build($token->accessToken());
-
-        return response()->json(json_decode((string)$httpClient->sendRequest($request)->getBody(), true));
+        return response()->json(json_decode((string)$response->getBody(), true));
     }
 }

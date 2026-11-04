@@ -15,7 +15,7 @@ class RpTest extends DuskTestCase
      *
      * An authentication response containing an authorization code.
      *
-     * @see ResponseTypeCode
+     * @see \App\Http\Controllers\Rp\Code\ResponseTypeCode
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-response_type-code.txt
      */
     public function testResponseTypeCode(): void
@@ -33,7 +33,7 @@ class RpTest extends DuskTestCase
      *
      * A UserInfo Response containing the requested claims. If no access token is issued (when using Implicit Flow with response_type='id_token') the ID Token contains the requested claims.
      *
-     * @see ScopeUserinfoClaims
+     * @see \App\Http\Controllers\Rp\Code\ScopeUserinfoClaims
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-scope-userinfo-claims.txt
      * @link https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
      */
@@ -55,14 +55,14 @@ class RpTest extends DuskTestCase
      *
      * Identify that the 'nonce' value in the ID Token is invalid and reject the ID Token.
      *
-     * @see NonceInvalid
+     * @see \App\Http\Controllers\Rp\Code\NonceInvalid
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-nonce-invalid.txt
      *
      * @link https://openid.net/specs/openid-connect-core-1_0.html#NonceNotes
      */
     public function testNonceInvalid(): void
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete('oidc/core Client::handleCallback() does not verify the nonce claim yet');
 
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-nonce-invalid
@@ -76,7 +76,7 @@ class RpTest extends DuskTestCase
      *
      * A Token Response, containing an ID token.
      *
-     * @see TokenEndpointClientSecretBasic
+     * @see \App\Http\Controllers\Rp\Code\TokenEndpointClientSecretBasic
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-token_endpoint-client_secret_basic.txt
      */
     public function testTokenEndpointClientSecretBasic(): void
@@ -93,7 +93,7 @@ class RpTest extends DuskTestCase
      *
      * Use the single matching key out of the Issuer's published set to verify the ID Tokens signature and accept the ID Token after doing ID Token validation.
      *
-     * @see IdTokenKidAbsentSingleJwks
+     * @see \App\Http\Controllers\Rp\Code\IdTokenKidAbsentSingleJwks
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-kid-absent-single-jwks.txt
      * @link https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
      */
@@ -109,11 +109,11 @@ class RpTest extends DuskTestCase
     }
 
     /**
-     * Request an ID token and compare its aud value to the Relying Party's 'client_id'.
+     * Request an ID token and verify its 'iat' value.
      *
-     * Identify that the 'aud' value is missing or doesn't match the 'client_id' and reject the ID Token after doing ID Token validation.
+     * Identify the missing 'iat' value and reject the ID Token after doing ID Token validation.
      *
-     * @see IdTokenIat
+     * @see \App\Http\Controllers\Rp\Code\IdTokenIat
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-iat.txt
      */
     public function testIdTokenIat(): void
@@ -121,16 +121,17 @@ class RpTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-id_token-iat
             $browser->visit('/rp/code/rp-id_token-iat')
-                ->assertSee('Receive an invalid ID token');
+                ->assertSee('Relying party info is invalid')
+                ->assertSee('The following claims are mandatory: iat');
         });
     }
 
     /**
-     * Request an ID token and verify its 'iat' value.
+     * Request an ID token and compare its aud value to the Relying Party's 'client_id'.
      *
-     * Identify the missing 'iat' value and reject the ID Token after doing ID Token validation.
+     * Identify that the 'aud' value is missing or doesn't match the 'client_id' and reject the ID Token after doing ID Token validation.
      *
-     * @see IdTokenAud
+     * @see \App\Http\Controllers\Rp\Code\IdTokenAud
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-aud.txt
      */
     public function testIdTokenAud(): void
@@ -138,7 +139,8 @@ class RpTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-id_token-aud
             $browser->visit('/rp/code/rp-id_token-aud')
-                ->assertSee('Receive an invalid ID token');
+                ->assertSee('Relying party info is invalid')
+                ->assertSee('Bad audience');
         });
     }
 
@@ -147,7 +149,7 @@ class RpTest extends DuskTestCase
      *
      * Accept the ID Token after doing ID Token validation.
      *
-     * @see IdTokenSigNone
+     * @see \App\Http\Controllers\Rp\Code\IdTokenSigNone
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-sig-none.txt
      */
     public function testIdTokenSigNone(): void
@@ -156,7 +158,7 @@ class RpTest extends DuskTestCase
             // http://localhost:8000/rp/code/rp-id_token-sig-none
             $browser->visit('/rp/code/rp-id_token-sig-none');
 
-            $this->markTestIncomplete();
+            $this->markTestIncomplete('oidc/core does not accept unsigned ID Token (alg=none) yet');
         });
     }
 }

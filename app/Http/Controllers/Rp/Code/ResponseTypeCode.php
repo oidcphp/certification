@@ -3,24 +3,17 @@
 namespace App\Http\Controllers\Rp\Code;
 
 use App\Http\Controllers\Rp\CertificationTrait;
-use Illuminate\Http\Request;
-use OpenIDConnect\OAuth2\Metadata\ClientMetadata;
+use Psr\Http\Message\ResponseInterface;
 
 /**
- * @see RpTest::testResponseTypeCode()
+ * @see \Tests\Browser\RpTest::testResponseTypeCode()
  */
 class ResponseTypeCode
 {
     use CertificationTrait;
 
-    public function __invoke(Request $request, ClientMetadata $clientMetadata)
+    public function __invoke(): ResponseInterface
     {
-        $client = $this->createOpenIDConnectClient($clientMetadata, 'code', 'rp-response_type-code');
-
-        return $client->createAuthorizeRedirectResponse([
-            'redirect_uri' => 'http://localhost:8000/callback/id-token',
-            'response_mode' => 'query',
-            'response_type' => 'code',
-        ]);
+        return $this->redirectToAuthorization('code', 'rp-response_type-code', '/callback/id-token');
     }
 }
