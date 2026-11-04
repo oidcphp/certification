@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Rp\Code;
 
-use App\Http\Controllers\Rp\CertificationTrait;
+use App\Certification\RelyingParty;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -10,10 +10,8 @@ use Psr\Http\Message\ResponseInterface;
  */
 class TokenEndpointClientSecretBasic
 {
-    use CertificationTrait;
-
-    public function __invoke(): ResponseInterface
+    public function __invoke(RelyingParty $rp): ResponseInterface
     {
-        return $this->redirectToAuthorization('code', 'rp-token_endpoint-client_secret_basic', '/callback/token-set');
+        return $rp->redirect('code', 'rp-token_endpoint-client_secret_basic', 'callback.token-set');
     }
 }

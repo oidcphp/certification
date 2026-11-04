@@ -27,7 +27,7 @@ Route::prefix('rp/configuration')->group(function () {
     Route::get('rp-discovery-openid-configuration', Configuration\DiscoveryOpenIDConfiguration::class);
 });
 
-Route::get('/callback', Callback::class);
-Route::get('/callback/token-set', CallbackTokenSet::class);
-Route::get('/callback/id-token', CallbackIdToken::class);
-Route::get('/callback/user-info', CallbackUserInfo::class);
+Route::get('/callback', Callback::class)->name('callback');
+Route::get('/callback/token-set', CallbackTokenSet::class)->name('callback.token-set');
+Route::get('/callback/id-token', CallbackIdToken::class)->name('callback.id-token');
+Route::get('/callback/user-info', CallbackUserInfo::class)->name('callback.user-info');
