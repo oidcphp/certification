@@ -2,30 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Rp\CertificationTrait;
+use App\Certification\RelyingParty;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use MilesChou\Psr\Http\Client\HttpClientInterface;
-use OpenIDConnect\Http\Request\UserInfoRequestBuilder;
 
 /**
  * Show the UserInfo response
  */
-class CallbackUserInfo extends Controller
+class CallbackUserInfo
 {
-    use CertificationTrait;
-
-    public function __invoke(Request $request, HttpClientInterface $httpClient): JsonResponse
+    public function __invoke(Request $request, RelyingParty $rp): JsonResponse
     {
-        $session = $request->session();
-        $config = $this->restoreConfig($session);
+        $token = $rp->handleCallback($request);
 
-        $token = $this->handleAuthorizationCallback($session, $request->query(), '/callback/user-info');
-
-        $response = (new UserInfoRequestBuilder($config, $httpClient))
-            ->build($token->accessToken())
-            ->send();
-
-        return response()->json(json_decode((string)$response->getBody(), true));
+        return response()->json($rp->userInfo($token));
     }
 }

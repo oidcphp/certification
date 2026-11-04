@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Rp\CertificationTrait;
+use App\Certification\RelyingParty;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
  * Show the token response
  */
-class CallbackTokenSet extends Controller
+class CallbackTokenSet
 {
-    use CertificationTrait;
-
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, RelyingParty $rp): JsonResponse
     {
-        $token = $this->handleAuthorizationCallback($request->session(), $request->query(), '/callback/token-set');
+        $token = $rp->handleCallback($request);
 
         return response()->json($token);
     }

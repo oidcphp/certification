@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Rp\Code;
 
-use App\Http\Controllers\Rp\CertificationTrait;
+use App\Certification\RelyingParty;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -10,11 +10,9 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ScopeUserinfoClaims
 {
-    use CertificationTrait;
-
-    public function __invoke(): ResponseInterface
+    public function __invoke(RelyingParty $rp): ResponseInterface
     {
-        return $this->redirectToAuthorization('code', 'rp-scope-userinfo-claims', '/callback/user-info', [
+        return $rp->redirect('code', 'rp-scope-userinfo-claims', 'callback.user-info', [
             'scope' => 'openid profile email address phone',
         ]);
     }

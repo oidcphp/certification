@@ -19,12 +19,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ClientMetadata::class, function () {
             return new ClientMetadata([
                 'contacts' => config('certification.contacts'),
-                'redirect_uris' => [
-                    url('/callback'),
-                    url('/callback/id-token'),
-                    url('/callback/token-set'),
-                    url('/callback/user-info'),
-                ],
+                'redirect_uris' => array_map('route', [
+                    'callback',
+                    'callback.id-token',
+                    'callback.token-set',
+                    'callback.user-info',
+                ]),
             ]);
         });
     }
