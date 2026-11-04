@@ -67,6 +67,7 @@ The tests target the old RP test tool `https://rp.certification.openid.net:8080`
 
 ## Conventions
 
+- Write everything in the repository and on GitHub in English, including files, commit messages, issues, pull requests, releases, and reports.
 - Follow PSR-12. `phpcs.xml.dist` checks `app`, `config`, `routes`, and `tests`.
 - Files end with a single newline.
 - Do not commit `.env`, `vendor/`, or Dusk screenshots and console logs.
