@@ -1,11 +1,13 @@
 # AGENTS.md
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119.html) [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174.html) when, and only when, they appear in all capitals, as shown here.
+
 ## Purpose
 
 This repository is an OpenID Connect Relying Party (RP) certification harness for [`oidc/core`](https://github.com/oidcphp/core). Each route runs one RP test case of the OpenID certification RP test tool and shows the result. The goal is to test the behavior of `oidc/core` itself.
 
-- Do not work around `oidc/core` bugs in this repository, for example by verifying ID Token claims yourself. That would hide the gap the certification is meant to catch. Report the bug to `oidcphp/core` and mark the related test incomplete with the reason.
-- Workarounds for missing conveniences are fine when they do not hide verification gaps. For example, `RelyingParty` appends the well-known path and sends `nonce` explicitly.
+- `oidc/core` bugs MUST NOT be worked around in this repository, for example by verifying ID Token claims yourself. That would hide the gap the certification is meant to catch. The bug MUST be reported to `oidcphp/core`, and the related test MUST be marked incomplete with the reason.
+- Workarounds for missing conveniences MAY be added when they do not hide verification gaps. For example, `RelyingParty` appends the well-known path and sends `nonce` explicitly.
 
 ## Stack
 
@@ -33,24 +35,26 @@ composer install
 cp .env.example .env
 php artisan key:generate
 
-php vendor/bin/phpcs               # lint (PSR-12), run before committing
+php vendor/bin/phpcs               # lint (PSR-12)
 php artisan route:list             # quick check that the app boots
 
-php artisan serve --port=8000      # the app must run on the APP_URL used by the tests
+php artisan serve --port=8000      # serve on the APP_URL used by the tests
 php artisan dusk:chrome-driver --detect
 vendor/bin/phpunit -c phpunit.dusk.xml
 ```
 
 - `make test` does not work yet, see #19.
+- `phpcs` MUST pass before committing.
+- The app MUST run on the `APP_URL` used by the Dusk tests.
 - Dusk needs Google Chrome. CI only runs lint and `route:list`.
 
 ## Adding a test case
 
-1. Add an invokable controller in `app/Http/Controllers/Rp/<Profile>/` that calls `$rp->redirect('<profile>', '<test-id>', '<callback route name>')`. Pass extra authorization parameters, such as `scope`, as the fourth argument.
-2. Register the route in `routes/web.php` under the matching `rp/<profile>` prefix. The path is the test ID.
-3. Add a Dusk test in `tests/Browser/`. Add a docblock with the test description and expected result from the test tool, `@see` to the controller, and `@link` to the test log and the related spec section. Add `@see` to the test in the controller docblock.
+1. An invokable controller MUST be added in `app/Http/Controllers/Rp/<Profile>/` that calls `$rp->redirect('<profile>', '<test-id>', '<callback route name>')`. Extra authorization parameters, such as `scope`, MAY be passed as the fourth argument.
+2. The route MUST be registered in `routes/web.php` under the matching `rp/<profile>` prefix, and the path MUST be the test ID.
+3. A Dusk test MUST be added in `tests/Browser/`. Its docblock SHOULD contain the test description and expected result from the test tool, `@see` to the controller, and `@link` to the test log and the related spec section. The controller docblock SHOULD have `@see` to the test.
 
-Callback paths are only defined in `routes/web.php`. Refer to them by route name (`callback`, `callback.id-token`, `callback.token-set`, `callback.user-info`). The registered `redirect_uris` are derived from the same names.
+Callback paths MUST only be defined in `routes/web.php`, and MUST be referred to by route name (`callback`, `callback.id-token`, `callback.token-set`, `callback.user-info`). The registered `redirect_uris` are derived from the same names.
 
 ## `oidc/core` behavior to know
 
@@ -58,8 +62,8 @@ Callback paths are only defined in `routes/web.php`. Refer to them by route name
 - `Client` adds `state` to the authorization request but not `nonce`, so `RelyingParty` sends `nonce` explicitly.
 - `Client::handleCallback()` does not verify the `nonce` claim (oidcphp/core#12). `testNonceInvalid` is incomplete until it is fixed.
 - Unsigned ID Tokens (`alg=none`) are rejected (oidcphp/core#14). `testIdTokenSigNone` is incomplete.
-- Every value passed as `$checks` to `handleCallback()` is also sent to the token endpoint and copied into the `TokenSet` (oidcphp/core#15). Only pass `state` and `redirect_uri`.
-- Invalid claims throw `RelyingPartyException` with `Relying party info is invalid: ...`. Signature failures throw `OpenIDProviderException` with `Receive an invalid ID token: ...`. Assert the message that matches the failure.
+- Every value passed as `$checks` to `handleCallback()` is also sent to the token endpoint and copied into the `TokenSet` (oidcphp/core#15). Only `state` and `redirect_uri` SHOULD be passed.
+- Invalid claims throw `RelyingPartyException` with `Relying party info is invalid: ...`. Signature failures throw `OpenIDProviderException` with `Receive an invalid ID token: ...`. Tests MUST assert the message that matches the failure.
 
 ## Certification tool status
 
@@ -67,9 +71,9 @@ The tests target the old RP test tool `https://rp.certification.openid.net:8080`
 
 ## Conventions
 
-- Write everything in the repository and on GitHub in English, including files, commit messages, issues, pull requests, releases, and reports.
-- In PHPDoc, use `@see` for references to code (FQSEN) and `@link` for references to websites (URI). A description after the reference is not required.
-- Link RFCs to the RFC Editor HTML page, `https://www.rfc-editor.org/rfc/rfcNNNN.html`, with `#section-X.Y` for a section. Do not use `tools.ietf.org`, which now redirects to an info page without the section anchor.
-- Follow PSR-12. `phpcs.xml.dist` checks `app`, `config`, `routes`, and `tests`.
-- Files end with a single newline.
-- Do not commit `.env`, `vendor/`, or Dusk screenshots and console logs.
+- Everything in the repository and on GitHub MUST be written in English, including files, commit messages, issues, pull requests, releases, and reports.
+- In PHPDoc, references to code (FQSEN) MUST use `@see`, and references to websites (URI) MUST use `@link`. A description after the reference is OPTIONAL.
+- RFCs MUST be linked to the RFC Editor HTML page, `https://www.rfc-editor.org/rfc/rfcNNNN.html`, with `#section-X.Y` for a section. `tools.ietf.org` MUST NOT be used, since it now redirects to an info page without the section anchor.
+- Code MUST follow PSR-12. `phpcs.xml.dist` checks `app`, `config`, `routes`, and `tests`.
+- Files MUST end with a single newline.
+- `.env`, `vendor/`, and Dusk screenshots and console logs MUST NOT be committed.
