@@ -29,7 +29,7 @@ class RelyingParty
     /**
      * Build the OpenID Provider Configuration URL, Issuer::discover() does not append the well-known path.
      *
-     * @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfigurationRequest
+     * @link https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfigurationRequest
      */
     public function discoveryUrl(string $profile, string $testId): string
     {
