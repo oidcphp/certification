@@ -69,6 +69,7 @@ The tests target the old RP test tool `https://rp.certification.openid.net:8080`
 
 - Write everything in the repository and on GitHub in English, including files, commit messages, issues, pull requests, releases, and reports.
 - In PHPDoc, use `@see` for references to code (FQSEN) and `@link` for references to websites (URI). A description after the reference is not required.
+- Link RFCs to the RFC Editor HTML page, `https://www.rfc-editor.org/rfc/rfcNNNN.html`, with `#section-X.Y` for a section. Do not use `tools.ietf.org`, which now redirects to an info page without the section anchor.
 - Follow PSR-12. `phpcs.xml.dist` checks `app`, `config`, `routes`, and `tests`.
 - Files end with a single newline.
 - Do not commit `.env`, `vendor/`, or Dusk screenshots and console logs.
