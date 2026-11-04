@@ -3,24 +3,22 @@
 namespace App\Http\Controllers\Rp\Configuration;
 
 use App\Http\Controllers\Rp\CertificationTrait;
-use Illuminate\Http\Request;
-use OpenIDConnect\Core\Issuer;
-use OpenIDConnect\OAuth2\Metadata\ClientMetadata;
-use Tests\Browser\ConfigurationTest;
+use Illuminate\Http\JsonResponse;
+use MilesChou\Psr\Http\Client\HttpClientInterface;
+use OpenIDConnect\Issuer;
 
 /**
- * @see ConfigurationTest::testDiscoveryOpenIDConfiguration()
+ * @see \Tests\Browser\ConfigurationTest::testDiscoveryOpenIDConfiguration()
  */
 class DiscoveryOpenIDConfiguration
 {
     use CertificationTrait;
 
-    public function __invoke(Request $request, ClientMetadata $clientMetadata)
+    public function __invoke(HttpClientInterface $httpClient): JsonResponse
     {
-        $url = $this->createAuthorizationUrl('configuration', 'rp-discovery-openid-configuration');
+        $url = $this->createDiscoveryUrl('configuration', 'rp-discovery-openid-configuration');
 
-        $issuer = Issuer::create(app());
-        $provider = $issuer->discover($url);
+        $provider = (new Issuer($httpClient))->discover($url);
 
         return response()->json($provider->toArray());
     }

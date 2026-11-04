@@ -15,7 +15,7 @@ class ConfigurationTest extends DuskTestCase
      *
      * Read and use the JSON object returned from the OpenID Connect Provider.
      *
-     * @see DiscoveryOpenIDConfiguration
+     * @see \App\Http\Controllers\Rp\Configuration\DiscoveryOpenIDConfiguration
      * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.configuration/rp-discovery-openid-configuration.txt
      * @link https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
      */

@@ -3,24 +3,18 @@
 namespace App\Http\Controllers\Rp\Code;
 
 use App\Http\Controllers\Rp\CertificationTrait;
-use Illuminate\Http\Request;
-use OpenIDConnect\OAuth2\Metadata\ClientMetadata;
+use Psr\Http\Message\ResponseInterface;
 
 /**
- * @see RpTest::testScopeUserinfoClaims()
+ * @see \Tests\Browser\RpTest::testScopeUserinfoClaims()
  */
 class ScopeUserinfoClaims
 {
     use CertificationTrait;
 
-    public function __invoke(Request $request, ClientMetadata $clientMetadata)
+    public function __invoke(): ResponseInterface
     {
-        $client = $this->createOpenIDConnectClient($clientMetadata, 'code', 'rp-scope-userinfo-claims');
-
-        return $client->createAuthorizeRedirectResponse([
-            'redirect_uri' => 'http://localhost:8000/callback/user-info',
-            'response_mode' => 'query',
-            'response_type' => 'code',
+        return $this->redirectToAuthorization('code', 'rp-scope-userinfo-claims', '/callback/user-info', [
             'scope' => 'openid profile email address phone',
         ]);
     }

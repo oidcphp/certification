@@ -32,7 +32,7 @@ Desktop.ini
 # SVN files
 .svn
 
-# Compoesr files
+# Composer files
 /vendor
 
 # Config files
@@ -42,3 +42,5 @@ Desktop.ini
 
 # Artifacts files
 .phpunit.result.cache
+.phpunit.cache
+/tests/Browser/source
