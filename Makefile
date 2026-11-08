@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-.PHONY: check test coverage
+.PHONY: all check test server
 
 # ---------------------------------------------------------------------
 
@@ -9,11 +9,9 @@ all: test
 check:
 	php vendor/bin/phpcs
 
+# Dusk needs the app to be served on APP_URL, see `make server`
 test: check
-	phpdbg -qrr vendor/bin/phpunit
-
-coverage: test
-	@if [ "`uname`" = "Darwin" ]; then open build/coverage/index.html; fi
+	php vendor/bin/phpunit -c phpunit.dusk.xml
 
 server:
 	php artisan serve

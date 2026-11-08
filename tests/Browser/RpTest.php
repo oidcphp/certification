@@ -101,10 +101,7 @@ class RpTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-id_token-kid-absent-single-jwks
-            $browser->visit('/rp/code/rp-id_token-kid-absent-single-jwks')
-                ->assertSee('iss')
-                ->assertSee('sub')
-                ->assertSee('aud');
+            $this->assertIdTokenAccepted($browser->visit('/rp/code/rp-id_token-kid-absent-single-jwks'));
         });
     }
 
@@ -160,5 +157,127 @@ class RpTest extends DuskTestCase
 
             $this->markTestIncomplete('oidc/core does not accept unsigned ID Token (alg=none) yet');
         });
+    }
+
+    /**
+     * Request an ID token and compare its 'iss' value with the Issuer Identifier of the OpenID Provider.
+     *
+     * The client must identify that the 'iss' value is incorrect and reject the ID Token after doing ID Token validation.
+     *
+     * @see \App\Http\Controllers\Rp\Code\IdTokenIssuerMismatch
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-issuer-mismatch.txt
+     * @link https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
+     */
+    public function testIdTokenIssuerMismatch(): void
+    {
+        $this->browse(function (Browser $browser) {
+            // http://localhost:8000/rp/code/rp-id_token-issuer-mismatch
+            $browser->visit('/rp/code/rp-id_token-issuer-mismatch')
+                ->assertSee('Relying party info is invalid')
+                ->assertSee('Unknown issuer');
+        });
+    }
+
+    /**
+     * Request an ID token without the 'sub' claim.
+     *
+     * The client must identify the missing 'sub' claim and must reject the ID Token.
+     *
+     * @see \App\Http\Controllers\Rp\Code\IdTokenSub
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-sub.txt
+     * @link https://openid.net/specs/openid-connect-core-1_0.html#IDToken
+     */
+    public function testIdTokenSub(): void
+    {
+        $this->browse(function (Browser $browser) {
+            // http://localhost:8000/rp/code/rp-id_token-sub
+            $browser->visit('/rp/code/rp-id_token-sub')
+                ->assertSee('Relying party info is invalid')
+                ->assertSee('The following claims are mandatory: sub');
+        });
+    }
+
+    /**
+     * Request an ID token without 'kid' in the JOSE header, while the Issuer publishes multiple keys.
+     *
+     * Identify that the 'kid' value is missing from the JOSE header and that the Issuer publishes multiple keys in its JWK Set document (referenced by 'jwks_uri'). The RP can do one of two things; reject the ID Token since it can not by using the kid determined which key to use to verify the signature. Or it can just test all possible keys and hit upon one that works, which it will in this case.
+     *
+     * oidc/core tries every key of the set (web-token JWSVerifier), so the ID Token is accepted.
+     *
+     * @see \App\Http\Controllers\Rp\Code\IdTokenKidAbsentMultipleJwks
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-kid-absent-multiple-jwks.txt
+     * @link https://openid.net/specs/openid-connect-core-1_0.html#Signing
+     */
+    public function testIdTokenKidAbsentMultipleJwks(): void
+    {
+        $this->browse(function (Browser $browser) {
+            // http://localhost:8000/rp/code/rp-id_token-kid-absent-multiple-jwks
+            $this->assertIdTokenAccepted($browser->visit('/rp/code/rp-id_token-kid-absent-multiple-jwks'));
+        });
+    }
+
+    /**
+     * Request an ID token signed using RS256.
+     *
+     * The client is expected to accept an id_token signed using RS256.
+     *
+     * @see \App\Http\Controllers\Rp\Code\IdTokenSigRs256
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-sig-rs256.txt
+     * @link https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
+     */
+    public function testIdTokenSigRs256(): void
+    {
+        $this->browse(function (Browser $browser) {
+            // http://localhost:8000/rp/code/rp-id_token-sig-rs256
+            $this->assertIdTokenAccepted($browser->visit('/rp/code/rp-id_token-sig-rs256'));
+        });
+    }
+
+    /**
+     * Request an ID token with an invalid RS256 signature.
+     *
+     * The client must identify the invalid signature and reject the ID Token after doing ID Token validation.
+     *
+     * The specification lets the client skip this validation when the ID Token comes from the token endpoint, but oidc/core always verifies the signature.
+     *
+     * @see \App\Http\Controllers\Rp\Code\IdTokenBadSigRs256
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-id_token-bad-sig-rs256.txt
+     * @link https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
+     */
+    public function testIdTokenBadSigRs256(): void
+    {
+        $this->browse(function (Browser $browser) {
+            // http://localhost:8000/rp/code/rp-id_token-bad-sig-rs256
+            $browser->visit('/rp/code/rp-id_token-bad-sig-rs256')
+                ->assertSee('Receive an invalid ID token')
+                ->assertSee('Unable to load and verify the token');
+        });
+    }
+
+    /**
+     * Make a UserInfo Request and verify the 'sub' value of the UserInfo Response.
+     *
+     * The client is expected to verify the 'sub' value of the UserInfo Response by comparing it with the ID Token's 'sub' value. The client must identify the invalid 'sub' value and reject the UserInfo Response.
+     *
+     * @see \App\Http\Controllers\Rp\Code\UserinfoBadSubClaim
+     * @link https://rp.certification.openid.net:8080/log/oidcphp-rp.code/rp-userinfo-bad-sub-claim.txt
+     * @link https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
+     * @link https://github.com/oidcphp/core/issues/35
+     */
+    public function testUserinfoBadSubClaim(): void
+    {
+        $this->markTestIncomplete('oidc/core does not verify the sub claim of the UserInfo Response yet (oidcphp/core#35)');
+    }
+
+    /**
+     * Assert that the ID Token was accepted, the callback shows its claims.
+     *
+     * @see \App\Http\Controllers\CallbackIdToken
+     */
+    private function assertIdTokenAccepted(Browser $browser): void
+    {
+        $browser->assertSee('iss')
+            ->assertSee('sub')
+            ->assertSee('aud');
     }
 }
