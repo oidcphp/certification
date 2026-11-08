@@ -69,6 +69,13 @@ Callback paths MUST only be defined in `routes/web.php`, and MUST be referred to
 
 The tests target the old RP test tool `https://rp.certification.openid.net:8080` (`{base_url}/{rp_id}.{profile}/{test_id}`), which currently times out. Migration to the new conformance suite is tracked in #21, and a mock OP for local and CI runs in #22.
 
+## Documentation
+
+The user documentation of `oidc/core` lives in [oidcphp/docs](https://github.com/oidcphp/docs).
+
+- When a change in this repository changes how the certification is run or what its results mean, for example the commands, the test tool, or the profiles covered, the related pages in `oidcphp/docs` MUST be updated in a pull request to that repository.
+- When this repository finds that `oidc/core` behaves differently from what `oidcphp/docs` says, the gap MUST be reported to `oidcphp/core` or `oidcphp/docs`, whichever is wrong.
+
 ## Conventions
 
 - Everything in the repository and on GitHub MUST be written in English, including files, commit messages, issues, pull requests, releases, and reports.
