@@ -43,7 +43,7 @@ php artisan dusk:chrome-driver --detect
 vendor/bin/phpunit -c phpunit.dusk.xml
 ```
 
-- `make test` does not work yet, see #19.
+- `make test` runs `phpcs` and then Dusk, so the app MUST already be served (`make server`).
 - `phpcs` MUST pass before committing.
 - The app MUST run on the `APP_URL` used by the Dusk tests.
 - Dusk needs Google Chrome. CI only runs lint and `route:list`.
@@ -62,6 +62,7 @@ Callback paths MUST only be defined in `routes/web.php`, and MUST be referred to
 - `Client` adds `state` to the authorization request but not `nonce`, so `RelyingParty` sends `nonce` explicitly.
 - `Client::handleCallback()` does not verify the `nonce` claim (oidcphp/core#12). `testNonceInvalid` is incomplete until it is fixed.
 - Unsigned ID Tokens (`alg=none`) are rejected (oidcphp/core#14). `testIdTokenSigNone` is incomplete.
+- The `sub` Claim of the UserInfo Response is not verified against the ID Token (oidcphp/core#35). `testUserinfoBadSubClaim` is incomplete.
 - Every value passed as `$checks` to `handleCallback()` is also sent to the token endpoint and copied into the `TokenSet` (oidcphp/core#15). Only `state` and `redirect_uri` SHOULD be passed.
 - Invalid claims throw `RelyingPartyException` with `Relying party info is invalid: ...`. Signature failures throw `OpenIDProviderException` with `Receive an invalid ID token: ...`. Tests MUST assert the message that matches the failure.
 

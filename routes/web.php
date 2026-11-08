@@ -21,6 +21,12 @@ Route::prefix('rp/code')->group(function () {
     Route::get('rp-id_token-iat', Code\IdTokenIat::class);
     Route::get('rp-id_token-aud', Code\IdTokenAud::class);
     Route::get('rp-id_token-sig-none', Code\IdTokenSigNone::class);
+    Route::get('rp-id_token-issuer-mismatch', Code\IdTokenIssuerMismatch::class);
+    Route::get('rp-id_token-sub', Code\IdTokenSub::class);
+    Route::get('rp-id_token-kid-absent-multiple-jwks', Code\IdTokenKidAbsentMultipleJwks::class);
+    Route::get('rp-id_token-sig-rs256', Code\IdTokenSigRs256::class);
+    Route::get('rp-id_token-bad-sig-rs256', Code\IdTokenBadSigRs256::class);
+    Route::get('rp-userinfo-bad-sub-claim', Code\UserinfoBadSubClaim::class);
 });
 
 Route::prefix('rp/configuration')->group(function () {
