@@ -14,4 +14,4 @@ test: check
 	php vendor/bin/phpunit -c phpunit.dusk.xml
 
 server:
-	php artisan serve --port=8000
+	php artisan serve

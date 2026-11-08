@@ -101,10 +101,7 @@ class RpTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-id_token-kid-absent-single-jwks
-            $browser->visit('/rp/code/rp-id_token-kid-absent-single-jwks')
-                ->assertSee('iss')
-                ->assertSee('sub')
-                ->assertSee('aud');
+            $this->assertIdTokenAccepted($browser->visit('/rp/code/rp-id_token-kid-absent-single-jwks'));
         });
     }
 
@@ -215,10 +212,7 @@ class RpTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-id_token-kid-absent-multiple-jwks
-            $browser->visit('/rp/code/rp-id_token-kid-absent-multiple-jwks')
-                ->assertSee('iss')
-                ->assertSee('sub')
-                ->assertSee('aud');
+            $this->assertIdTokenAccepted($browser->visit('/rp/code/rp-id_token-kid-absent-multiple-jwks'));
         });
     }
 
@@ -235,10 +229,7 @@ class RpTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             // http://localhost:8000/rp/code/rp-id_token-sig-rs256
-            $browser->visit('/rp/code/rp-id_token-sig-rs256')
-                ->assertSee('iss')
-                ->assertSee('sub')
-                ->assertSee('aud');
+            $this->assertIdTokenAccepted($browser->visit('/rp/code/rp-id_token-sig-rs256'));
         });
     }
 
@@ -276,5 +267,17 @@ class RpTest extends DuskTestCase
     public function testUserinfoBadSubClaim(): void
     {
         $this->markTestIncomplete('oidc/core does not verify the sub claim of the UserInfo Response yet (oidcphp/core#35)');
+    }
+
+    /**
+     * Assert that the ID Token was accepted, the callback shows its claims.
+     *
+     * @see \App\Http\Controllers\CallbackIdToken
+     */
+    private function assertIdTokenAccepted(Browser $browser): void
+    {
+        $browser->assertSee('iss')
+            ->assertSee('sub')
+            ->assertSee('aud');
     }
 }
